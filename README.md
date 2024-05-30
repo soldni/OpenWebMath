@@ -1,3 +1,6 @@
+*This is a fork of the original OpenWebMath repository. The original repository can be found [here](https://github.com/keirp/OpenWebMath). The purpose of this fork is to make the OpenWebMath text extractor pip-installable.*
+
+
 # <img align="left" width="100" height="100" src="imgs/openwebmath_logo.png" style="margin-top: -12px; margin-bottom: 0px; margin-right:-10px;"> OpenWebMath: An Open Dataset of High-Quality Mathematical Web Text
 
 [Keiran Paster](https://keirp.com)\*, [Marco Dos Santos](https://marco-dossantos.github.io/)\*, [Zhangir Azerbayev](https://zhangir-azerbayev.github.io/), [Jimmy Ba](https://jimmylba.github.io/)
