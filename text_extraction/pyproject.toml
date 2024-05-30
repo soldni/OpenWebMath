@@ -1,6 +1,6 @@
 [project]
 name = "openwebmath-text-extract"
-version = "0.1.0"
+version = "0.1.1"
 description = "Text Extractor from OpenWebMath"
 authors = [
     {name = "Keiran Paster", email = "keirp@cs.toronto.edu" }
@@ -29,7 +29,7 @@ where = ["."]
 include = ["text_extract*"]
 
 [tool.setuptools.package-data]
-"*" = ["py.typed", "*.pyi", "mmltex/*", "*txt", "*.py"]
+"*" = ["py.typed", "*.pyi", "mmltex/*", "*txt", "*.py", "configs/*"]
 
 [build-system]
 build-backend = "setuptools.build_meta"

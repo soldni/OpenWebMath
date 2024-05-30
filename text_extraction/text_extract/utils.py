@@ -1,6 +1,10 @@
+from pathlib import Path
 import re
 import yaml
 import numpy as np
+
+CONFIG_PATH = str((Path(__file__).parent / "configs/randomize_all.yaml").absolute())
+
 
 def has_style(style, styles):
     """Does the style string contain any of the styles?
@@ -42,7 +46,7 @@ def word_wrap(text, char_width=20):
     return "\n".join(lines)
 
 class ReplacementManager:
-    """This replacement manager simply adds tags next to the instances of the text. 
+    """This replacement manager simply adds tags next to the instances of the text.
     It contains a method to remove these tags."""
 
     def __init__(self):
@@ -51,11 +55,11 @@ class ReplacementManager:
     def add_replacement(self, text, tag='default'):
         self.tags.append(tag)
         return f'§§{tag}§§' + text
-    
+
     def remove_tags(self, text):
         tag_regex = "|".join(f'§§{tag}§§' for tag in self.tags)
         return re.sub(tag_regex, '', text)
-    
+
     def has_tag(self, text, tag):
         return f'§§{tag}§§' in text
 
@@ -63,10 +67,10 @@ class Config:
     """A simple config object that loads a config from a YAML file and
     presents as a dictionary"""
 
-    def __init__(self, config_file):
+    def __init__(self, config_file: str = CONFIG_PATH):
         with open(config_file, 'r') as f:
             self.config = yaml.safe_load(f)
-        
+
     def sample_from_list(self, list):
         """Sample from a list of (probability, value) tuples."""
         probabilities = [p for p, _ in list]
@@ -74,7 +78,7 @@ class Config:
         probabilities = np.array(probabilities)
         probabilities /= probabilities.sum()
         return np.random.choice(values, p=probabilities)
-    
+
     def _sample(self, config):
         # For every value that has a type of list, first check it is in the format of:
         # - (probability, value)
@@ -95,6 +99,6 @@ class Config:
             else:
                 sampled_config[key] = value
         return sampled_config
-    
+
     def sample(self):
         return self._sample(self.config)
