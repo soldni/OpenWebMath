@@ -3,7 +3,7 @@ import re
 import yaml
 import numpy as np
 
-CONFIG_PATH = str((Path(__file__).parent / "configs/randomize_all.yaml").absolute())
+CONFIG_PATH = str((Path(__file__).parent / "configs/randomized_all.yaml").absolute())
 
 
 def has_style(style, styles):
