@@ -1,5 +1,7 @@
+from typing import Optional, Union
 from resiliparse.parse.html import HTMLTree
 from resiliparse.extract.html2text import extract_plain_text
+from resiliparse.parse.encoding import detect_encoding
 import os
 import re
 
@@ -20,7 +22,7 @@ with open(selectors_path, "r") as f:
 
 def filter_tree(tree, replacement_manager, config):
     """Filters the HTML tree to remove unwanted elements."""
-    
+
     # Remove display none elements
     remove_display_none(tree)
 
@@ -65,14 +67,18 @@ def replace_tags(html, old, new):
     pattern = re.compile(old, re.IGNORECASE)
     return pattern.sub(new, html)
 
-def extract_text(html, config, fast=False):
+def extract_text(html: Union[str, bytes], config, encoding: Optional[str] = None, fast=False):
     """Extracts plain text from an HTML string."""
     html = replace_tags(html, '<template', '<div')
     html = replace_tags(html, '</template', '</div')
     html = replace_tags(html, '<frameset', '<div')
     html = replace_tags(html, '</frameset>', '</div>')
     html = html_preprocessing(html)
-    tree = HTMLTree.parse(html)
+
+    if isinstance(html, bytes):
+        tree = HTMLTree.parse_from_bytes(document=html, encoding=encoding or detect_encoding(html))
+    else:
+        tree = HTMLTree.parse(html)
     replacement_manager = ReplacementManager()
 
     if fast:
@@ -90,11 +96,11 @@ def extract_text(html, config, fast=False):
     tree = filter_tree(tree, replacement_manager, config)
 
     # Disable their filters because we use our own.
-    text = extract_plain_text(tree, 
-                              main_content=True, 
+    text = extract_plain_text(tree,
+                              main_content=True,
                               alt_texts=False,
                               skip_elements=selectors)
-        
+
     if config['extract_latex']:
         text = extract_delimited_math(text, math_config, info, replacement_manager)
 
@@ -124,7 +130,7 @@ def extract_text(html, config, fast=False):
 
     # Now, add the dollar signs for math
     text = replace_math_tags_with_dollar_signs(text)
-    
+
     if config['remove_edit_buttons']:
         # Remove edit buttons
         lines = text.split("\n")

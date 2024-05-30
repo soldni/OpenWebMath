@@ -1,6 +1,6 @@
 [project]
 name = "openwebmath-text-extract"
-version = "0.1.2"
+version = "0.1.3"
 description = "Text Extractor from OpenWebMath"
 authors = [
     {name = "Keiran Paster", email = "keirp@cs.toronto.edu" }
